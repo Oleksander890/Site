@@ -1,0 +1,520 @@
+:root {
+--navy: #18295b;
+--blue: #3678f6;
+--purple: #7c5cfc;
+--bg: #f4f7fc;
+--text: #18233f;
+--muted: #63708a;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+margin: 0;
+font-family: Arial, sans-serif;
+background: var(--bg);
+color: var(--text);
+line-height: 1.6;
+}
+header {
+background: var(--navy);
+color: white;
+padding: 18px 6%;
+}
+nav {
+display: flex;
+align-items: center;
+justify-content: space-between;
+gap: 16px;
+flex-wrap: wrap;
+}
+.logo { font-size: 25px; font-weight: 800; }
+.logo span { color: #75b5ff; }
+nav a {
+color: white;
+text-decoration: none;
+margin-left: 16px;
+}
+/* Основний стиль для кнопок меню з ефектом скла */
+header nav a {
+    display: inline-block;
+    color: #ffffff;                             /* Текст білого кольору */
+    text-decoration: none;                      /* Прибираємо підкреслення */
+    font-weight: 500;                           /* Трохи товстіший шрифт */
+    font-size: 15px;                            /* Розмір шрифту */
+    
+    padding: 8px 18px;                          /* Відступи всередині кнопки (зверху/знизу, з боків) */
+    margin: 0 6px;                              /* Відстань МІЖ кнопками */
+    
+    background: rgba(255, 255, 255, 0.15);      /* Напівпрозорий білий фон */
+    backdrop-filter: blur(10px);                /* Ефект розмиття фону за кнопкою */
+    -webkit-backdrop-filter: blur(10px);        /* Підтримка для браузера Safari */
+    
+    border: 1px solid rgba(255, 255, 255, 0.3); /* Тонка світла рамка */
+    border-radius: 20px;                        /* Заокруглення кутів (овальні кнопки) */
+    
+    transition: all 0.3s ease;                  /* Плавність при наведенні мишки */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);  /* Легка м'яка тінь */
+}
+
+/* Ефект при наведенні курсора на кнопку */
+header nav a:hover {
+    background: rgba(255, 255, 255, 0.35);     /* Фон стає світлішим */
+    border-color: rgba(255, 255, 255, 0.6);     /* Рамка стає яскравішою */
+    transform: translateY(-2px);                /* Кнопка плавно «піднімається» на 2px вгору */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); /* Тінь стає трохи більшою */
+}
+.hero {
+padding: 65px 6%;
+color: white;
+background: linear-gradient(125deg, #101b3d, #284a9a, #6747cb);
+}
+.hero-inner { max-width: 900px; }
+.eyebrow {
+color: #9fc8ff;
+font-weight: bold;
+letter-spacing: 2px;
+font-size: 13px;
+}
+h1 { font-size: clamp(34px, 6vw, 58px); line-height: 1.1; }
+.hero p { max-width: 650px; font-size: 18px; }
+.button {
+display: inline-block;
+background: var(--blue);
+color: white;
+border: 0;
+border-radius: 10px;
+padding: 12px 18px;
+font-size: 15px;
+font-weight: bold;
+text-decoration: none;
+cursor: pointer;
+}
+.hero .button { background: white; color: var(--navy); }
+main { max-width: 1200px; margin: auto; padding: 35px 20px; }
+section { margin-bottom: 55px; scroll-margin-top: 20px; }
+h2 { font-size: 30px; margin-bottom: 8px; }
+.subtitle { color: var(--muted); margin-top: 0; }
+.controls {
+display: flex;
+gap: 12px;
+flex-wrap: wrap;
+margin: 22px 0;
+}
+input[type="search"], select {
+min-width: 200px;
+flex: 1;
+padding: 13px;
+border: 1px solid #d7dfef;
+border-radius: 10px;
+background: white;
+font-size: 15px;
+}
+.filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 22px; }
+.filter {
+border: 1px solid #d7dfef;
+background: white;
+color: var(--text);
+padding: 9px 13px;
+border-radius: 22px;
+cursor: pointer;
+}
+.filter.active { background: var(--navy); color: white; }
+.cards {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(min(100%, 290px), 1fr));
+gap: 18px;
+}
+.card {
+background: white;
+border: 1px solid #e0e7f3;
+border-radius: 16px;
+padding: 21px;
+box-shadow: 0 5px 18px #1b2b4b0a;
+}
+.card-icon { font-size: 30px; }
+.card h3 { margin: 8px 0; line-height: 1.3; }
+.card p { margin: 8px 0; }
+.meta { font-size: 14px; color: var(--muted); }
+.status {
+background: #fff6df;
+color: #735015;
+border-radius: 8px;
+padding: 9px;
+font-size: 13px;
+}
+.source {
+display: inline-block;
+margin-top: 10px;
+color: #245ed2;
+font-weight: bold;
+overflow-wrap: anywhere;
+}
+.panel {
+background: white;
+padding: 25px;
+border: 1px solid #e0e7f3;
+border-radius: 16px;
+}
+.option {
+display: flex;
+gap: 10px;
+padding: 13px;
+margin: 10px 0;
+border: 1px solid #d7dfef;
+border-radius: 10px;
+cursor: pointer;
+}
+.option:hover { background: #f1f5ff; }
+.option input { margin-top: 5px; }
+#quizResult { margin-top: 20px; }
+footer {
+background: var(--navy);
+color: white;
+padding: 30px 6%;
+}
+footer a { color: #a8caff; }
+.small { font-size: 13px; color: var(--muted); }
+@media(max-width:600px) {
+nav { align-items: flex-start; }
+nav a { margin: 0 12px 0 0; }
+.hero { padding: 45px 6%; }
+main { padding: 25px 14px; }
+.panel { padding: 17px; }
+}
+html {
+scroll-behavior: smooth;
+}
+
+.card {
+position: relative;
+overflow: hidden;
+transition:
+transform 0.3s ease,
+box-shadow 0.3s ease,
+border-color 0.3s ease;
+}
+
+.card::before {
+content: "";
+position: absolute;
+top: 0;
+left: -120%;
+width: 60%;
+height: 100%;
+background: linear-gradient(
+110deg,
+transparent,
+rgba(54, 120, 246, 0.09),
+transparent
+);
+transform: skewX(-20deg);
+transition: left 0.6s ease;
+pointer-events: none;
+}
+
+.card:hover {
+transform: translateY(-7px);
+box-shadow: 0 16px 35px rgba(16, 27, 61, 0.13);
+border-color: #8eb6ff;
+}
+
+.card:hover::before {
+left: 150%;
+}
+
+.button {
+transition:
+transform 0.2s ease,
+box-shadow 0.2s ease;
+}
+
+.button:hover {
+transform: translateY(-2px);
+box-shadow: 0 8px 22px rgba(54, 120, 246, 0.3);
+}
+
+.filter {
+transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.filter:hover {
+transform: translateY(-2px);
+}
+
+.hero {
+position: relative;
+overflow: hidden;
+}
+
+.hero h1 {
+animation: heroEnter 0.8s ease both;
+}
+
+.hero .hero-inner > p:not(.eyebrow) {
+animation: heroEnter 1s ease both;
+}
+
+@keyframes heroEnter {
+from {
+opacity: 0;
+transform: translateY(18px);
+}
+to {
+opacity: 1;
+transform: translateY(0);
+}
+}
+
+/* Плавна поява секцій */
+section {
+animation: sectionEnter 0.65s ease both;
+}
+
+@keyframes sectionEnter {
+from {
+opacity: 0;
+transform: translateY(14px);
+}
+to {
+opacity: 1;
+transform: translateY(0);
+}
+}
+
+/* Зручність для користувачів,
+які вимкнули анімацію на пристрої */
+@media (prefers-reduced-motion: reduce) {
+html {
+scroll-behavior: auto;
+}
+
+*,
+*::before,
+*::after {
+animation-duration: 0.01ms !important;
+animation-iteration-count: 1 !important;
+transition-duration: 0.01ms !important;
+scroll-behavior: auto !important;
+}
+}
+.reveal {
+opacity: 0;
+transform: translateY(24px);
+transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal.visible {
+opacity: 1;
+transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+.reveal {
+opacity: 1;
+transform: none;
+}
+}
+/* Анімація головного екрана City4Youth */
+.hero-modern {
+    background:
+  linear-gradient(
+    90deg,
+    rgba(8, 19, 52, 0.75),
+    rgba(8, 27, 66, 0.35)
+  ),
+  url("images/city4youth-hero.jpg") center 42% / cover no-repeat;
+  display: flex;
+justify-content: space-between; /* Розносить текст ліворуч, а картку праворуч */
+align-items: center;
+}
+.hero-modern .eyebrow {
+  animation: textAppear 0.6s ease both;
+
+}
+.eyebrow{
+    visibility: hidden;
+}
+.hero-modern h1 {
+    visibility: hidden;
+  animation: textAppear 0.8s ease both;
+  animation-delay: 0.1s;
+}
+
+.hero-modern .hero-description {
+  animation: textAppear 0.8s ease both;
+  animation-delay: 0.25s;
+}
+
+.hero-modern .hero-button {
+  animation: textAppear 0.8s ease both;
+  animation-delay: 0.4s;
+}
+
+.hero-test {
+  animation: textAppear 0.8s ease both;
+  animation-delay: 0.3s;
+}
+
+@keyframes textAppear {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Інтерактивні кнопки */
+.hero-modern .button {
+  transition: transform 0.25s ease,
+              box-shadow 0.25s ease,
+              filter 0.25s ease;
+}
+
+.hero-modern .button:hover {
+  transform: translateY(-4px) scale(1.03);
+  box-shadow: 0 10px 25px rgba(39, 213, 255, 0.3);
+  filter: brightness(1.12);
+}
+
+.hero-modern .button:active {
+  transform: scale(0.97);
+}
+
+.hero-modern .button:focus-visible {
+  outline: 3px solid #27d5ff;
+  outline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-modern *,
+  .hero-test {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+/* Контейнер картки */
+.test-card {
+  width: 100%;
+  max-width: 280px;            /* Зменшили максимальну ширину (було 340px) */
+  background: rgba(15, 23, 42, 0.85); 
+  backdrop-filter: blur(12px); 
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1); 
+  border-radius: 20px;          
+  padding: 24px 18px;          /* Зменшили внутрішні відступи (було 32px 24px) */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;     
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); 
+  
+  /* Додай оцей рядок, щоб відсунути картку вправо від хлопця: */
+  margin-left: auto;/*450px*/           
+}
+
+/* Зменшуємо текст, щоб він акуратніше виглядав у меншій картці */
+.test-card-title {
+  color: #ffffff;
+  font-size: 1rem;             /* Зменшили розмір шрифту (було 1.15rem) */
+  font-weight: 600;
+  line-height: 1.4;
+  margin: 0 0 20px 0;          /* Зменшили відступ до кнопки */
+  text-align: left;
+}
+
+/* Іконка */
+.test-card-icon {
+  margin-bottom: 20px;
+}
+
+/* Заголовок/текст */
+.test-card-title {
+  color: #ffffff;
+  font-size: 1.15rem;
+  font-weight: 600;
+  line-height: 1.4;
+  margin: 0 0 28px 0;
+  text-align: left;
+}
+
+/* Фірмова градієнтна кнопка */
+.test-card-btn {
+  display: block;
+  width: 100%;
+  padding: 14px 20px;
+  text-align: center;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 1rem;
+  text-decoration: none;
+  border-radius: 12px;
+  
+  /* Блакитно-фіолетовий градієнт */
+  background: linear-gradient(135deg, #3b82f6 0%, #a855f7 100%);
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+  transition: all 0.3s ease;
+}
+
+/* Ефект при наведенні на кнопку */
+.test-card-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(168, 85, 247, 0.4);
+  filter: brightness(1.1);
+}
+/* Логотип City4Youth у шапці */
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.logo img {
+    height: 65px;
+    width: auto;
+    object-fit: contain;
+    display: block;
+}
+
+/* Для телефонів */
+
+@media (max-width: 600px) {
+    .logo img {
+        height: 48px;
+    }
+}
+/* Логотип для комп'ютера */
+.logo .desktop-logo {
+    display: block;
+    height: 65px;
+    width: auto;
+}
+
+/* Компактний логотип прихований */
+.logo .mobile-logo {
+    display: none;
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+}
+
+/* Мобільна версія */
+@media screen and (max-width: 600px) {
+
+    .logo .desktop-logo {
+        display: none;
+    }
+
+    .logo .mobile-logo {
+        display: block;
+    }
+
+}
