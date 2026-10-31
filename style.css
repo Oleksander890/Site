@@ -73,7 +73,7 @@ background: linear-gradient(125deg, #101b3d, #284a9a, #6747cb);
     width: calc(100% - 40px);
     margin: 0 auto;
 
-    /* display: flex; */
+    display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 30px;
@@ -516,9 +516,8 @@ transform: none;
     object-fit: contain;
 }
 
-/* Мобільна версія */
+/* CITY4YOUTH — мобільний банер */
 @media screen and (max-width: 600px) {
-
     .logo .desktop-logo {
         display: none;
     }
@@ -527,32 +526,60 @@ transform: none;
         display: block;
     }
 
-}
-/* Адаптація головного банера */
-@media (max-width: 600px) {
-
     .hero-modern {
-        padding: 35px 0;
-        background-position: center;
-    }
-
-    .hero-inner {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 25px;
-    }
-
-    .hero-copy {
         width: 100%;
-        max-width: 100%;
-    }
-
-    .hero-card {
-        position: relative;
-        width: 100%;
-        max-width: 100%;
+        height: auto;
+        min-height: 0;
+        padding: 25px 0;
         box-sizing: border-box;
-        margin: 0;
     }
 
+    .hero-modern .hero-inner {
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: flex-start !important;
+        align-items: stretch !important;
+        width: calc(100% - 36px) !important;
+        max-width: none !important;
+        margin: 0 auto;
+        gap: 24px;
+    }
+
+    .hero-modern .hero-copy {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0;
+    }
+
+    .hero-modern .test-card {
+        position: relative !important;
+        top: auto !important;
+        right: auto !important;
+        bottom: auto !important;
+        left: auto !important;
+        transform: none !important;
+
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0;
+        margin: 0 !important;
+        box-sizing: border-box;
+    }
+
+    .hero-modern .test-card-title {
+        overflow-wrap: break-word;
+    }
+
+    .hero-modern .test-card-btn {
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+        text-align: center;
+    }
+
+    .hero-modern .hero-copy img {
+        max-width: 100%;
+        height: auto;
+    }
 }
