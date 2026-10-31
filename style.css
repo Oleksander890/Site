@@ -68,7 +68,16 @@ padding: 65px 6%;
 color: white;
 background: linear-gradient(125deg, #101b3d, #284a9a, #6747cb);
 }
-.hero-inner { max-width: 900px; }
+.hero-inner {
+    max-width: 900px;
+    width: calc(100% - 40px);
+    margin: 0 auto;
+
+    /* display: flex; */
+    justify-content: space-between;
+    align-items: center;
+    gap: 30px;
+}
 .eyebrow {
 color: #9fc8ff;
 font-weight: bold;
@@ -317,15 +326,16 @@ transform: none;
 /* Анімація головного екрана City4Youth */
 .hero-modern {
     background:
-  linear-gradient(
-    90deg,
-    rgba(8, 19, 52, 0.75),
-    rgba(8, 27, 66, 0.35)
-  ),
-  url("images/city4youth-hero.jpg") center 42% / cover no-repeat;
-  display: flex;
-justify-content: space-between; /* Розносить текст ліворуч, а картку праворуч */
-align-items: center;
+        linear-gradient(
+            90deg,
+            rgba(8, 19, 52, 0.75),
+            rgba(8, 27, 66, 0.35)
+        ),
+        url("images/city4youth-hero.jpg") center 42% / cover no-repeat;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 .hero-modern .eyebrow {
   animation: textAppear 0.6s ease both;
@@ -515,6 +525,34 @@ align-items: center;
 
     .logo .mobile-logo {
         display: block;
+    }
+
+}
+/* Адаптація головного банера */
+@media (max-width: 600px) {
+
+    .hero-modern {
+        padding: 35px 0;
+        background-position: center;
+    }
+
+    .hero-inner {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 25px;
+    }
+
+    .hero-copy {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .hero-card {
+        position: relative;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        margin: 0;
     }
 
 }
