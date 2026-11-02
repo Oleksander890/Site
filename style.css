@@ -57,7 +57,7 @@ header nav a {
 }
 
 /* Ефект при наведенні курсора на кнопку */
-header nav a:hover {
+header nav a:hover {                                /* Текст стає чорним */
     background: rgba(255, 255, 255, 0.35);     /* Фон стає світлішим */
     border-color: rgba(255, 255, 255, 0.6);     /* Рамка стає яскравішою */
     transform: translateY(-2px);                /* Кнопка плавно «піднімається» на 2px вгору */
@@ -354,7 +354,6 @@ transform: none;
   animation: textAppear 0.8s ease both;
   animation-delay: 0.25s;
 }
-
 .hero-modern .hero-button {
   animation: textAppear 0.8s ease both;
   animation-delay: 0.4s;
@@ -582,4 +581,35 @@ transform: none;
         max-width: 100%;
         height: auto;
     }
+}
+/* CITY4YOUTH — стильне меню */
+header nav a {
+    color: #ffffff;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(180,220,255,0.35);
+    border-radius: 30px;
+    padding: 12px 22px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+/* Ефект наведення */
+header nav a:hover {
+    background: #BDEEFF;
+    color: #10264D;
+    border-color: #70D8FF;
+    box-shadow: 0 0 18px rgba(60,200,255,0.4);
+    transform: translateY(-3px);
+}
+
+/* Коли натискають */
+header nav a:active {
+    transform: scale(0.96);
+}
+
+/* Доступність з клавіатури */
+header nav a:focus-visible {
+    outline: 3px solid #70D8FF;
+    outline-offset: 4px;
 }
