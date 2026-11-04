@@ -131,7 +131,7 @@ link.className = "source";
 link.href = item.source;
 link.target = "_blank";
 link.rel = "noopener noreferrer";
-link.textContent = "Відкрити джерело ↗";
+link.textContent = "Детальніше";
 
 Natali:
 article.append(icon, title, org, desc, address, status, date, link);
