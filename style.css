@@ -613,3 +613,183 @@ header nav a:focus-visible {
     outline: 3px solid #70D8FF;
     outline-offset: 4px;
 }
+/* ===== CITY4YOUTH MAP ===== */
+
+.city-map-section {
+    padding: 70px 5%;
+    background: #f4f7fb;
+    color: #17233b;
+}
+
+.map-heading {
+    max-width: 750px;
+    margin: 0 auto 35px;
+    text-align: center;
+}
+
+.section-label {
+    color: #5275e8;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 3px;
+}
+
+.map-heading h2 {
+    font-size: 34px;
+    margin: 12px 0;
+}
+
+.map-heading p {
+    color: #64748b;
+    line-height: 1.7;
+}
+
+.map-layout {
+    display: grid;
+    grid-template-columns: 330px 1fr;
+    gap: 22px;
+    max-width: 1250px;
+    margin: auto;
+    align-items: start;
+}
+
+.map-main {
+    align-self: start;
+    height: auto;
+    min-height: 0;
+}
+
+#cityMap {
+    width: 100%;
+    height: 570px;
+    border-radius: 13px;
+}
+
+.map-sidebar,
+.map-main {
+    background: white;
+    border-radius: 18px;
+    padding: 20px;
+    box-shadow: 0 8px 30px rgba(25, 45, 80, 0.07);
+}
+
+.map-sidebar h3 {
+    margin-top: 0;
+}
+
+.map-sidebar {
+    background: white;
+    border-radius: 18px;
+    padding: 20px;
+    box-shadow: 0 8px 30px rgba(25, 45, 80, 0.07);
+
+    height: 570px;
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
+#mapSearch {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 13px;
+    border: 1px solid #dce3ee;
+    border-radius: 10px;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+.map-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 18px;
+}
+
+.map-filter {
+    border: 1px solid #dce3ee;
+    background: #f7f9fc;
+    color: #334155;
+    padding: 9px 11px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.map-filter.active {
+    background: #315de8;
+    border-color: #315de8;
+    color: white;
+}
+
+#cityMap {
+    width: 100%;
+    height: 570px;
+    border-radius: 13px;
+    z-index: 1;
+}
+
+.map-status {
+    color: #64748b;
+    font-size: 13px;
+    margin-bottom: 0;
+}
+
+.map-places-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.map-place-card {
+    border: 1px solid #e6ebf2;
+    border-radius: 12px;
+    padding: 12px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.map-place-card:hover {
+    border-color: #5275e8;
+    background: #f7f9ff;
+}
+
+.map-place-card h4 {
+    margin: 0 0 6px;
+    font-size: 14px;
+}
+
+.map-place-card p {
+    margin: 4px 0;
+    color: #64748b;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.map-place-card a {
+    display: inline-block;
+    margin-top: 7px;
+    color: #315de8;
+    font-size: 12px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.map-empty {
+    color: #64748b;
+    font-size: 13px;
+    padding: 12px 0;
+}
+
+@media (max-width: 800px) {
+    .map-layout {
+        grid-template-columns: 1fr;
+    }
+
+    #cityMap {
+        height: 430px;
+    }
+
+    .map-heading h2 {
+        font-size: 26px;
+    }
+}

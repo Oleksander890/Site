@@ -15,6 +15,7 @@
 
 <!-- Іконка для телефонів -->
 <link rel="apple-touch-icon" type="image/jpg" href="images/icon.jpg">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 </head>
 
 <body>
@@ -143,12 +144,74 @@
 </section>
 </main>
 
+<!-- КАРТА МОЖЛИВОСТЕЙ ЖИТОМИРА -->
+<section class="city-map-section" id="city-map-section">
+    <div class="map-heading">
+        <span class="section-label">CITY4YOUTH / EXPLORE</span>
+        <h2>Можливості поруч із тобою</h2>
+        <p>
+            Знаходь освітні, STEM, спортивні та творчі простори Житомира.
+            Обирай категорію та переглядай інформацію про заклади.
+        </p>
+    </div>
+
+    <div class="map-layout">
+
+        <div class="map-sidebar">
+            <h3>Знайти локацію</h3>
+
+            <input
+                type="text"
+                id="mapSearch"
+                placeholder="Введи назву або адресу..."
+            >
+
+            <div class="map-filters">
+                <button class="map-filter active" data-category="all">
+                    Усі
+                </button>
+
+                <button class="map-filter" data-category="stem">
+                    STEM та IT
+                </button>
+
+                <button class="map-filter" data-category="education">
+                    Освіта
+                </button>
+
+                <button class="map-filter" data-category="youth">
+                    Молодіжні простори
+                </button>
+
+                <button class="map-filter" data-category="sport">
+                    Спорт
+                </button>
+
+                <button class="map-filter" data-category="culture">
+                    Культура
+                </button>
+            </div>
+
+            <div id="mapPlacesList" class="map-places-list"></div>
+        </div>
+
+        <div class="map-main">
+            <div id="cityMap"></div>
+            <p id="mapStatus" class="map-status">
+                Завантаження карти...
+            </p>
+        </div>
+
+    </div>
+</section>
+
 <footer>
 <div class="logo">City<span>4</span>Youth</div>
 <p>Більше можливостей — більше ідей для майбутнього.</p>
 <p class="small">Учнівський проєкт. Перед відвідуванням заходів перевіряйте інформацію на сайті організатора.</p>
 </footer>
 
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="bootstrap/bootstrap.js"></script>
 <script src="script.js"></script>
 </body>

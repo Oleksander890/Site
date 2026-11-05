@@ -358,3 +358,403 @@ if ("IntersectionObserver" in window) {
 
 renderCards();
 renderQuestion();
+// ==========================================
+// CITY4YOUTH — ІНТЕРАКТИВНА КАРТА ЖИТОМИРА
+// ==========================================
+
+(function () {
+    const mapElement = document.getElementById("cityMap");
+
+    // Якщо на сторінці немає карти або Leaflet,
+    // цей код не заважатиме іншим функціям сайту.
+    if (!mapElement || typeof L === "undefined") {
+        return;
+    }
+
+    const statusElement = document.getElementById("mapStatus");
+    const listElement = document.getElementById("mapPlacesList");
+    const searchElement = document.getElementById("mapSearch");
+    const filterButtons = document.querySelectorAll(".map-filter");
+
+    // Реальні заклади та адреси Житомира.
+    const places = [
+        {
+            name: "Житомирський міський центр науково-технічної творчості учнівської молоді",
+            address: "вул. Віктора Косенка, 19, Житомир",
+            category: "stem",
+            type: "STEM, робототехніка, Arduino, 3D-моделювання",
+            website: "https://mcnttumzt.do.zt.ua/"
+        },
+        {
+            name: "Центр творчості дітей і молоді",
+            address: "майдан імені С. П. Корольова, 10, Житомир",
+            category: "culture",
+            type: "Творчість, гуртки, розвиток талантів",
+            website: "https://ctdim.zt.ua/"
+        },
+        {
+            name: "Молодіжний центр Житомирщини Kreativ Space",
+            address: "провулок Скорульського, 3, Житомир",
+            category: "youth",
+            type: "Молодіжні ініціативи та події",
+            website: "https://www.facebook.com/kreativ.space.zt"
+        },
+        {
+            name: "Пластовий молодіжний центр",
+            address: "вулиця Скорульського, 5, кабінет 114, Житомир",
+            category: "youth",
+            type: "Лідерство, командна робота, волонтерство",
+            website: "https://www.facebook.com/plastyouthcenter/"
+        },
+        {
+            name: "Житомирська політехніка",
+            address: "вулиця Чуднівська, 103, Житомир",
+            category: "education",
+            type: "Технічна освіта, IT, інженерія",
+            website: "https://ztu.edu.ua/"
+        },
+        {
+            name: "Житомирський державний університет імені Івана Франка",
+            address: "вулиця Велика Бердичівська, 40, Житомир",
+            category: "education",
+            type: "Університет, наука та освіта",
+            website: "https://zu.edu.ua/"
+        },
+        {
+            name: "Поліський національний університет",
+            address: "бульвар Старий, 7, Житомир",
+            category: "education",
+            type: "Освіта, наука, екологія",
+            website: "https://polissiauniver.edu.ua/"
+        },
+        {
+            name: "Житомирська обласна бібліотека для дітей та юнацтва",
+            address: "вулиця Університетська, 36, Житомир",
+            category: "education",
+            type: "Читання, навчання та культурні заходи",
+            website: "https://www.libertyspace.org.ua/"
+        },
+        {
+            name: "Центральна міська бібліотека імені Василя Земляка",
+            address: "вулиця Добровольчих батальйонів, 3, Житомир",
+            category: "education",
+            type: "Бібліотека, читання та навчання",
+            website: "https://littera.zt.ua/"
+        },
+        {
+            name: "Дитячо-юнацька спортивна школа №2",
+            address: "вулиця Хлібна, 24, Житомир",
+            category: "sport",
+            type: "Спортивні секції",
+            website: ""
+        },
+        {
+            name: "Житомирський Палац культури",
+            address: "вулиця Святослава Ріхтера, 12/5, Житомир",
+            category: "culture",
+            type: "Культурні заходи та творчі колективи",
+            website: ""
+        }
+    ];
+
+    // Початковий центр карти — місто Житомир.
+    const cityMap = L.map("cityMap").setView(
+        [50.2547, 28.6587],
+        13
+    );
+
+    // Підкладка карти Esri World Street Map
+L.tileLayer(
+    "https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}",
+    {
+        attribution:
+            "Tiles &copy; Esri — Sources: Esri, HERE, Garmin, USGS, and others",
+
+        maxZoom: 19
+    }
+).addTo(cityMap);
+
+    const markers = [];
+
+    let activeCategory = "all";
+
+    // Зчитування збережених координат.
+    function getSavedCoordinates() {
+        try {
+            return JSON.parse(
+                localStorage.getItem("city4youthMapCoordinates") || "{}"
+            );
+        } catch (error) {
+            return {};
+        }
+    }
+
+    // Збереження координат.
+    function saveCoordinates(data) {
+        try {
+            localStorage.setItem(
+                "city4youthMapCoordinates",
+                JSON.stringify(data)
+            );
+        } catch (error) {
+            console.warn("Не вдалося зберегти координати", error);
+        }
+    }
+
+    // Пошук координат за адресою через OpenStreetMap.
+    async function findCoordinates(address) {
+        const saved = getSavedCoordinates();
+
+        if (saved[address]) {
+            return saved[address];
+        }
+
+        const query = encodeURIComponent(address);
+
+        const url =
+            "https://nominatim.openstreetmap.org/search" +
+            "?format=jsonv2&limit=1&countrycodes=ua&q=" + query;
+
+        try {
+            const response = await fetch(url);
+
+            if (!response.ok) {
+                throw new Error("Помилка пошуку адреси");
+            }
+
+            const result = await response.json();
+
+            if (!result.length) {
+                return null;
+            }
+
+            const coordinates = {
+                lat: Number(result[0].lat),
+                lng: Number(result[0].lon)
+            };
+
+            saved[address] = coordinates;
+            saveCoordinates(saved);
+
+            return coordinates;
+
+        } catch (error) {
+            console.error("Не вдалося знайти:", address, error);
+            return null;
+        }
+    }
+
+    // Формування посилання для прокладання маршруту.
+    function getRouteLink(place) {
+        return "https://www.google.com/maps/search/?api=1&query=" +
+            encodeURIComponent(place.address);
+    }
+
+    // Додавання картки закладу до списку.
+    function createPlaceCard(place, index) {
+        const card = document.createElement("div");
+        card.className = "map-place-card";
+
+        const title = document.createElement("h4");
+        title.textContent = place.name;
+
+        const address = document.createElement("p");
+        address.textContent = "📍 " + place.address;
+
+        const type = document.createElement("p");
+        type.textContent = place.type;
+
+        const route = document.createElement("a");
+        route.href = getRouteLink(place);
+        route.target = "_blank";
+        route.rel = "noopener noreferrer";
+        route.textContent = "Прокласти маршрут →";
+
+        card.appendChild(title);
+        card.appendChild(address);
+        card.appendChild(type);
+        card.appendChild(route);
+
+        card.addEventListener("click", function (event) {
+            if (event.target.closest("a")) {
+                return;
+            }
+
+            const marker = markers[index];
+
+            if (marker) {
+                cityMap.flyTo(marker.getLatLng(), 16);
+                marker.openPopup();
+            }
+        });
+
+        return card;
+    }
+
+    // Оновлення списку відповідно до фільтра та пошуку.
+    function renderPlaces() {
+        listElement.replaceChildren();
+
+        const searchText = searchElement.value
+            .trim()
+            .toLowerCase();
+
+        const filtered = places
+            .map((place, index) => ({ place, index }))
+            .filter(function (item) {
+                const place = item.place;
+
+                const matchesCategory =
+                    activeCategory === "all" ||
+                    place.category === activeCategory;
+const matchesSearch =
+                    place.name.toLowerCase().includes(searchText) ||
+                    place.address.toLowerCase().includes(searchText) ||
+                    place.type.toLowerCase().includes(searchText);
+
+                return matchesCategory && matchesSearch;
+            });
+
+        if (filtered.length === 0) {
+            const empty = document.createElement("p");
+            empty.className = "map-empty";
+            empty.textContent = "За вашим запитом нічого не знайдено.";
+            listElement.appendChild(empty);
+            return;
+        }
+
+        filtered.forEach(function (item) {
+            listElement.appendChild(
+                createPlaceCard(item.place, item.index)
+            );
+        });
+    }
+
+    // Створення позначки на карті.
+    function addMarker(place, index, coordinates) {
+        const marker = L.marker([
+            coordinates.lat,
+            coordinates.lng
+        ]).addTo(cityMap);
+
+        const popup = document.createElement("div");
+
+        const title = document.createElement("strong");
+        title.textContent = place.name;
+
+        const address = document.createElement("p");
+        address.textContent = place.address;
+
+        const type = document.createElement("p");
+        type.textContent = place.type;
+
+        const route = document.createElement("a");
+        route.href = getRouteLink(place);
+        route.target = "_blank";
+        route.rel = "noopener noreferrer";
+        route.textContent = "Прокласти маршрут";
+
+        popup.appendChild(title);
+        popup.appendChild(address);
+        popup.appendChild(type);
+        popup.appendChild(route);
+
+        if (place.website) {
+            const website = document.createElement("p");
+            const link = document.createElement("a");
+
+            link.href = place.website;
+            link.target = "_blank";
+            link.rel = "noopener noreferrer";
+            link.textContent = "Сайт / сторінка закладу";
+
+            website.appendChild(link);
+            popup.appendChild(website);
+        }
+
+        marker.bindPopup(popup);
+
+        markers[index] = marker;
+    }
+
+    // Завантаження всіх позначок.
+    async function loadMapPlaces() {
+        let found = 0;
+
+        for (let i = 0; i < places.length; i++) {
+            statusElement.textContent =
+                "Знаходимо заклади на карті: " +
+                (i + 1) + " із " + places.length;
+
+            const coordinates = await findCoordinates(
+                places[i].address
+            );
+
+            if (coordinates) {
+                addMarker(places[i], i, coordinates);
+                found++;
+            }
+
+            // Не надсилаємо запити частіше ніж раз на секунду.
+            if (i < places.length - 1) {
+                await new Promise(function (resolve) {
+                    setTimeout(resolve, 1100);
+                });
+            }
+        }
+
+        statusElement.textContent =
+            "На карті знайдено " + found +
+            " із " + places.length + " закладів.";
+
+        renderPlaces();
+
+        // Показати всі знайдені позначки.
+        const visibleMarkers = markers.filter(Boolean);
+
+        if (visibleMarkers.length > 0) {
+            const group = L.featureGroup(visibleMarkers);
+            cityMap.fitBounds(group.getBounds().pad(0.12));
+        }
+    }
+
+    // Робота пошуку.
+    searchElement.addEventListener("input", renderPlaces);
+
+    // Робота кнопок категорій.
+    filterButtons.forEach(function (button) {
+        button.addEventListener("click", function () {
+            filterButtons.forEach(function (item) {
+                item.classList.remove("active");
+            });
+
+            button.classList.add("active");
+
+            activeCategory = button.dataset.category;
+
+            renderPlaces();
+
+            markers.forEach(function (marker, index) {
+                if (!marker) return;
+
+                const place = places[index];
+const visible =
+                    activeCategory === "all" ||
+                    place.category === activeCategory;
+
+                if (visible && cityMap.hasLayer(marker)) {
+                    marker.setOpacity(1);
+                } else if (visible) {
+                    marker.addTo(cityMap);
+                } else {
+                    cityMap.removeLayer(marker);
+                }
+            });
+        });
+    });
+
+    // Початковий список та завантаження карти.
+    renderPlaces();
+    loadMapPlaces();
+
+})();
