@@ -758,3 +758,33 @@ const visible =
     loadMapPlaces();
 
 })();
+// ===== BACK TO TOP BUTTON =====
+
+(function () {
+
+    const backToTop = document.getElementById("backToTop");
+
+    if (!backToTop) return;
+
+    // Показуємо кнопку після прокручування
+    window.addEventListener("scroll", function () {
+
+        if (window.scrollY > 350) {
+            backToTop.classList.add("show");
+        } else {
+            backToTop.classList.remove("show");
+        }
+
+    });
+
+    // Плавне повернення на початок
+    backToTop.addEventListener("click", function () {
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+
+    });
+
+})();
