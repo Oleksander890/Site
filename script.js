@@ -252,6 +252,163 @@ next.textContent = questionIndex === questions.length - 1
 : "Наступне запитання";
 }
 
+function createRadarChart(scores) {
+
+    const categories = [
+        { key: "science", label: "STEM" },
+        { key: "art", label: "Творчість" },
+        { key: "olympiad", label: "Олімпіади" },
+        { key: "competition", label: "Наука" }
+    ];
+
+    const total = answers.length || 1;
+
+    const values = categories.map(item =>
+        (scores[item.key] || 0) / total * 100
+    );
+
+    const centerX = 200;
+    const centerY = 190;
+    const radius = 125;
+
+    const angles = [
+        -90, 0, 90, 180
+    ];
+
+    function getPoint(angle, value) {
+        const radians = angle * Math.PI / 180;
+        const distance = radius * value / 100;
+
+        return {
+            x: centerX + Math.cos(radians) * distance,
+            y: centerY + Math.sin(radians) * distance
+        };
+    }
+
+    function polygonPoints(scale) {
+        return angles.map(angle => {
+            const p = getPoint(angle, scale);
+            return `${p.x},${p.y}`;
+        }).join(" ");
+    }
+
+    const wrapper = document.createElement("div");
+    wrapper.className = "radar-wrapper";
+
+    const heading = document.createElement("h3");
+    heading.textContent = "Твоя карта інтересів";
+
+    const svg = document.createElementNS(
+        "http://www.w3.org/2000/svg", "svg"
+    );
+
+    svg.setAttribute("viewBox", "0 0 400 380");
+    svg.classList.add("radar-chart");
+
+    // Сітка з ромбів
+    [25, 50, 75, 100].forEach(scale => {
+        const grid = document.createElementNS(
+            "http://www.w3.org/2000/svg", "polygon"
+        );
+
+        grid.setAttribute("points", polygonPoints(scale));
+        grid.setAttribute("class", "radar-grid");
+        svg.append(grid);
+    });
+
+    // Осі
+    angles.forEach(angle => {
+        const p = getPoint(angle, 100);
+
+        const line = document.createElementNS(
+            "http://www.w3.org/2000/svg", "line"
+        );
+
+        line.setAttribute("x1", centerX);
+        line.setAttribute("y1", centerY);
+        line.setAttribute("x2", p.x);
+        line.setAttribute("y2", p.y);
+        line.setAttribute("class", "radar-axis");
+
+        svg.append(line);
+    });
+
+    // Фігура результату
+    const points = values.map((value, index) =>
+        getPoint(angles[index], value)
+    );
+
+    const area = document.createElementNS(
+        "http://www.w3.org/2000/svg", "polygon"
+    );
+
+    area.setAttribute(
+        "points",
+        points.map(p => `${p.x},${p.y}`).join(" ")
+    );
+
+    area.setAttribute("class", "radar-area");
+    svg.append(area);
+
+    // Точки результатів
+    points.forEach(p => {
+        const circle = document.createElementNS(
+            "http://www.w3.org/2000/svg", "circle"
+        );
+
+        circle.setAttribute("cx", p.x);
+        circle.setAttribute("cy", p.y);
+        circle.setAttribute("r", 5);
+        circle.setAttribute("class", "radar-point");
+
+        svg.append(circle);
+    });
+
+    // Підписи напрямів та відсотків
+    const labelPositions = [
+        { x: 200, y: 24, anchor: "middle" },
+        { x: 355, y: 190, anchor: "start" },
+        { x: 200, y: 355, anchor: "middle" },
+        { x: 45, y: 190, anchor: "end" }
+    ];
+
+    categories.forEach((item, index) => {
+        const label = document.createElementNS(
+            "http://www.w3.org/2000/svg", "text"
+        );
+
+        label.setAttribute("x", labelPositions[index].x);
+        label.setAttribute("y", labelPositions[index].y);
+        label.setAttribute("text-anchor", labelPositions[index].anchor);
+        label.setAttribute("class", "radar-label");
+        label.textContent = item.label;
+
+        svg.append(label);
+
+        const percent = document.createElementNS(
+            "http://www.w3.org/2000/svg", "text"
+        );
+
+        const p = points[index];
+
+        percent.setAttribute("x", p.x);
+        percent.setAttribute("y", p.y - 10);
+        percent.setAttribute("text-anchor", "middle");
+        percent.setAttribute("class", "radar-percent");
+        percent.textContent = Math.round(values[index]) + "%";
+
+        svg.append(percent);
+    });
+const legend = document.createElement("p");
+    legend.className = "radar-legend";
+    legend.textContent =
+        "Розподіл твоїх інтересів за результатами тесту";
+
+    wrapper.append(heading, svg, legend);
+
+    return wrapper;
+}
+
 function showResults() {
 questionBox.replaceChildren();
 progress.textContent = "Тест завершено";
@@ -267,6 +424,8 @@ const winners = Object.keys(scores).filter(key => scores[key] === highest);
 const intro = document.createElement("p");
 intro.textContent = "Рекомендовані напрями для дослідження:";
 result.append(intro);
+
+result.append(createRadarChart(scores));
 
 Natali:
 winners.forEach(key => {
